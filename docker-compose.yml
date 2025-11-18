@@ -1,0 +1,66 @@
+services:
+  # ============================================
+  # 🚀 Your Node.js Boilerplate Service
+  # ============================================
+  boilerplate:
+    container_name: boilerplate
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - KAFKA_BROKERS=redpanda:9092
+      - KAFKA_CLIENT_ID=backend-service
+      - KAFKA_GROUP_ID=backend-group
+    ports:
+      - "5001:5001"
+    depends_on:
+      redpanda:
+        condition: service_started
+    volumes:
+      - ./logs:/usr/src/app/boilerplate/logs
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 4G
+      restart_policy:
+        condition: on-failure
+
+  # ============================================
+  # 🔊 Redpanda (Kafka API Compatible)
+  # ============================================
+  redpanda:
+    image: redpandadata/redpanda:latest
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=1G
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+    ports:
+      - "9092:9092"
+      - "9644:9644"
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+
+  # ============================================
+  # 📊 Redpanda Console (PUBLIC IMAGE)
+  # ============================================
+  redpanda-console:
+    image: redpandadata/console:latest
+    container_name: redpanda-console
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_BROKERS=redpanda:9092
+    depends_on:
+      - redpanda
+
+volumes:
+  redpanda_data:
