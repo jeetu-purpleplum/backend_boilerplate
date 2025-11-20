@@ -17,7 +17,7 @@ export const registerKafkaConsumers = async () => {
     await kafkaConsumer.run({
         eachMessage: async ({ topic, message }) => {
             const value = message.value?.toString();
-            console.log(`📨 Message received from ${topic}:`, value);
+            console.log(`Message received from ${topic}:`, value);
 
             if (topic === KAFKA_TOPICS.USER_CREATED) {
                 // handle user-created event

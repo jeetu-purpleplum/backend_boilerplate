@@ -1,16 +1,20 @@
 import { Kafka, logLevel } from "kafkajs";
+import { config } from "../config/config";
 
 export const kafka = new Kafka({
-    clientId: process.env.KAFKA_CLIENT_ID || "backend-boilerplate",
-    brokers: (process.env.KAFKA_BROKERS || "localhost:9092").split(","),
+    clientId: config.kafka.clientId,
+    brokers: (config.kafka.brokers).split(","),
     ssl: false, // set true for production if using SSL
     sasl: undefined, // add if needed
     logLevel: logLevel.INFO,
 });
 
-export const kafkaProducer = kafka.producer();
+export const kafkaProducer = kafka.producer({
+    allowAutoTopicCreation: true
+});
 export const kafkaConsumer = kafka.consumer({
-    groupId: process.env.KAFKA_GROUP_ID || "boilerplate-group",
+    groupId: config.kafka.groupId,
+    allowAutoTopicCreation: true
 });
 
 export const connectKafka = async () => {

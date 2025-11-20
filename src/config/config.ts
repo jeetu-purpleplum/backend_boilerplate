@@ -43,5 +43,10 @@ export const config: IConfig = {
         dataEncryptionKey: process.env.DATA_ENCRYPTION_KEY || "",
         responseEncryptionKey: process.env.RESPONSE_ENCRYPTION_KEY || "",
     },
+    kafka: {
+        brokers: process.env.KAFKA_BROKERS || "kafka:29092",
+        clientId: process.env.KAFKA_CLIENT_ID || "backend-service",
+        groupId: process.env.KAFKA_GROUP_ID || "backend-group"
+    }
 
 };

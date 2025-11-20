@@ -11,6 +11,7 @@ export interface IConfig {
     redis: IRedisConfig;
     swagger: ISwaggerConfig;
     encryption: IEncryption;
+    kafka: IKafkaConfig;
 
 }
 
@@ -51,6 +52,12 @@ export interface ISwaggerConfig {
 interface IEncryption {
     dataEncryptionKey: string;
     responseEncryptionKey: string;
+}
+
+export interface IKafkaConfig {
+    clientId: string;
+    brokers: string;
+    groupId: string;
 }
 
 export type DatabaseConnections = Knex[];
