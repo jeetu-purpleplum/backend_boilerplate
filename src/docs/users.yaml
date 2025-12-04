@@ -1,0 +1,17 @@
+tags:
+  - name: User
+    description: User-related endpoints
+
+paths:
+  /users:
+    get:
+      tags:
+        - User
+      summary: Get All the users user profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+        '401':
+          description: Unauthorized

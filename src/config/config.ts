@@ -47,6 +47,19 @@ export const config: IConfig = {
         brokers: process.env.KAFKA_BROKERS || "kafka:29092",
         clientId: process.env.KAFKA_CLIENT_ID || "backend-service",
         groupId: process.env.KAFKA_GROUP_ID || "backend-group"
+    },
+    clowd9: {
+        apiKey: process.env.CLOWD9_API_KEY || "",
+        apiSecret: process.env.CLOWD9_API_SECRET || "",
+        clientId: process.env.CLOWD9_CLIENT_ID || "",
+        productId: process.env.CLOWD9_PRODUCT_ID || "",
+        cardManufacturerId: process.env.CLOWD9_CARD_MANUFACTURER_ID || "",
+        baseUrl: process.env.CLOWD9_BASE_URL || "",
+    },
+    fxbo: {
+        baseUrl: process.env.FXFO_BASE_URL || "",
+        apiVersion: process.env.FXBO_API_VERSION || "",
+        token: process.env.FXBO_AUTH_TOKEN || ""
     }
 
 };

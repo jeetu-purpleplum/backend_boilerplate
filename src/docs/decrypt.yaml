@@ -1,0 +1,32 @@
+tags:
+  - name: Decryption
+    description: Decryption-related endpoints
+
+paths:
+  /decrypt:
+    post:
+      tags:
+        - Decryption
+      summary: Decrypt data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  example: "yrNdlzFwTHJEQClc+ppTen1MbCOk4kK+Duo3NLMWAQINgz0gBo+EuUUs"
+      responses:
+        '200':
+          description: Data Decrypted successfully
+        '400':
+          description: Bad Request
+
+components:
+  schemas:
+    properties:
+      data: string

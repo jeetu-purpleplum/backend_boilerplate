@@ -10,8 +10,8 @@ import { Model } from 'objection';
 import multer from 'multer';
 import routes from './routes'
 import { setupSwagger } from './config/swagger.config';
-import { connectKafka } from './lib/kafka';
-import { registerKafkaConsumers } from './lib/consumer';
+// import { connectKafka } from './lib/kafka';
+// import { registerKafkaConsumers } from './lib/consumer';
 
 const numCPUs = 1;
 const upload = multer();
@@ -77,8 +77,8 @@ if (cluster.isPrimary) {
         Model.knex(primaryConnection);
 
         // KAFKA CONNECTION
-        await connectKafka();
-        await registerKafkaConsumers();
+        // await connectKafka();
+        // await registerKafkaConsumers();
     });
 
 }

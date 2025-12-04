@@ -1,0 +1,316 @@
+tags:
+  - name: Customer
+    description: Customer-related endpoints
+
+paths:
+  /customers:
+    post:
+      tags:
+        - Customer
+      summary: Create a new customer
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created successfully
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+    get:
+      tags:
+        - Customer
+      summary: Get Customer List
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/ClientId'
+        - name: sort
+          in: query
+          required: false
+          description: Sort by creation date (asc for newest, desc for oldest)
+          schema:
+            type: string
+            enum: [asc, desc]
+            example: asc
+        - name: limit
+          in: query
+          required: false
+          description: Limit number of records returned
+          schema:
+            type: string
+            example: "20"
+        - name: next_page_token
+          in: query
+          required: false
+          description: Token to retrieve the next page of results
+          schema:
+            type: string
+            example: "eyJwYWdlIjogMn0="
+      responses:
+        '200':
+          description: Customer list retrieved successfully
+        '401':
+          description: Unauthorized
+
+  /customers/ref/{external_ref}:
+    get:
+      tags:
+        - Customer
+      summary: Get customer details using external reference
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/ClientId'
+        - name: external_ref
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer retrieved successfully
+        '404':
+          description: Customer not found
+        '401':
+          description: Unauthorized
+
+  /customers/{customer_id}:
+    get:
+      tags:
+        - Customer
+      summary: Get single customer details by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CustomerId'
+        
+      responses:
+        '200':
+          description: Customer details retrieved successfully
+        '404':
+          description: Customer not found
+        '401':
+          description: Unauthorized
+
+    post:
+      tags:
+        - Customer
+      summary: Update a customer
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created successfully
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /customers/{customer_id}/secure-key:
+    get:
+      tags:
+        - Customer
+      summary: Get secure customer key
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CustomerId'
+        
+      responses:
+        '200':
+          description: Secure key retrieved successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Customer not found
+
+  /customers/{customer_id}/cards:
+    get:
+      tags:
+        - Customer
+      summary: Get cards by customer ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Cards retrieved successfully
+        '401':
+          description: Unauthorized
+        '404':
+          description: Customer not found
+  
+
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        address_line1:
+          type: string
+          example: "221B Baker Street"
+        address_line2:
+          type: string
+          nullable: true
+          example: "Near Regent Park"
+        address_line3:
+          type: string
+          nullable: true
+          example: null
+        city:
+          type: string
+          example: "London"
+        state_county_or_province:
+          type: string
+          example: "Greater London"
+        post_code:
+          type: string
+          example: "NW1 6XE"
+        country_iso:
+          type: string
+          example: "GBR"
+
+    Identification:
+      type: object
+      properties:
+        identification_1_type:
+          type: string
+          example: "PASSPORT"
+        identification_1_id:
+          type: string
+          example: "123456789"
+        identification_1_country:
+          type: string
+          example: "GBR"
+        identification_1_state:
+          type: string
+          example: "London"
+        identification_2_type:
+          type: string
+          example: "DRIVING_LICENSE"
+        identification_2_id:
+          type: string
+          example: "DL-908765"
+        identification_2_country:
+          type: string
+          example: "GBR"
+        identification_2_state:
+          type: string
+          example: "London"
+
+    Customer:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        title:
+          type: string
+          example: "Mr"
+        first_name:
+          type: string
+          example: "John"
+        middle_name:
+          type: string
+          nullable: true
+          example: "Adam"
+        last_name:
+          type: string
+          example: "Doe"
+        date_of_birth:
+          type: string
+          example: "24/10/1981"
+        phone_number:
+          type: string
+          example: "+447911123456"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        external_ref:
+          type: string
+          example: "EXT-12345"
+        language_code:
+          type: string
+          example: "EN"
+        free_text:
+          type: string
+          nullable: true
+          example: "Preferred customer"
+        address:
+          $ref: '#/components/schemas/Address'
+        identification:
+          $ref: '#/components/schemas/Identification'
+
+    CreateCustomerRequest:
+      type: object
+      required:
+        - customer
+        - client_id
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+        client_id:
+          type: string
+          format: uuid
+          example: "a3c91eac-8b1d-4d1b-ae87-9ddc3bbb12ef"
+
+  parameters:
+    XApiEncrypt:
+      name: x-api-encrypt
+      in: header
+      schema:
+        type: boolean
+        default: false
+        example: false
+      description: Encryption flag for API requests
+    
+    ClientId:
+      name: client_id
+      in: query
+      required: true
+      description: The identifier of the client.
+      schema:
+        type: string
+        default: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+    
+    CustomerId:
+      name: customer_id
+      in: path  
+      required: true
+      description: The identifier of the customer.
+      schema:
+        type: string
+        default: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"

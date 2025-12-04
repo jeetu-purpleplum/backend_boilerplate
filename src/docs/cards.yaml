@@ -1,0 +1,774 @@
+tags:
+  - name: Cards
+    description: Card-related endpoints
+
+paths:
+  /cards:
+    post:
+      tags:
+        - Cards
+      summary: Create a new card
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCardRequest'
+      responses:
+        '201':
+          description: Card created successfully
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /cards/onboard:
+    post:
+      tags:
+        - Cards
+      summary: Onboard a card
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardOnboardRequest'
+      responses:
+        '200':
+          description: Card onboarded successfully
+
+  /cards/{card_id}/status:
+    post:
+      tags:
+        - Cards
+      summary: Update card status
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardStatusUpdateRequest'
+      responses:
+        '200':
+          description: Card status updated
+
+  /cards/query-by-pan:
+    post:
+      tags:
+        - Cards
+      summary: Query card using PAN
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardPANQueryRequest'
+      responses:
+        '200':
+          description: Card details retrieved
+
+  /cards/{card_id}:
+    get:
+      tags:
+        - Cards
+      summary: Get card by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      responses:
+        '200':
+          description: Card data retrieved
+
+  /cards/{card_id}/delivery:
+    patch:
+      tags:
+        - Cards
+      summary: Update card delivery details
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDeliveryUpdateRequest'
+      responses:
+        '200':
+          description: Delivery updated
+
+  /cards/{card_id}/replace:
+    post:
+      tags:
+        - Cards
+      summary: Replace a card
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardReplaceRequest'
+      responses:
+        '200':
+          description: Card replaced
+
+  /cards/{card_id}/renew:
+    post:
+      tags:
+        - Cards
+      summary: Renew a card
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardRenewRequest'
+      responses:
+        '200':
+          description: Card renewed
+
+  /cards/{card_id}/secure-details:
+    post:
+      tags:
+        - Cards
+      summary: Get secure card details
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecureCardDetailsRequest'
+      responses:
+        '200':
+          description: Secure details retrieved
+
+  /cards/{card_id}/usage:
+    get:
+      tags:
+        - Cards
+      summary: Get card usage
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      responses:
+        '200':
+          description: Usage retrieved
+
+    post:
+      tags:
+        - Cards
+      summary: Update card usage rules
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardUsageUpdateRequest'
+      responses:
+        '200':
+          description: Usage updated
+
+  /cards/{card_id}/upgrade:
+    post:
+      tags:
+        - Cards
+      summary: Upgrade card
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpgrateCardVirtualRequest'
+      responses:
+        '200':
+          description: Card upgraded
+
+  /schedule/{card_file_schedule_id}/bulk-address:
+    post:
+      tags:
+        - Cards
+      summary: Create bulk address entry
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardFileScheduleId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBulkAddressRequest'
+      responses:
+        '201':
+          description: Bulk address created
+
+  /schedule/{card_file_schedule_id}/bulk-address/{bulk_address_id}:
+    get:
+      tags:
+        - Cards
+      summary: Get bulk address
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardFileScheduleId'
+        - $ref: '#/components/parameters/BulkAddressId'
+      responses:
+        '200':
+          description: Bulk address retrieved
+
+    post:
+      tags:
+        - Cards
+      summary: Update bulk address
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardFileScheduleId'
+        - $ref: '#/components/parameters/BulkAddressId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBulkAddressRequest'
+      responses:
+        '200':
+          description: Bulk address updated
+
+    delete:
+      tags:
+        - Cards
+      summary: Delete bulk address entry
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/CardFileScheduleId'
+        - $ref: '#/components/parameters/BulkAddressId'
+      responses:
+        '200':
+          description: Bulk address deleted
+
+  /cards/{card_id}/set-secure-pin:
+    post:
+      tags:
+        - Cards
+      summary: Set secure PIN for card
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: card_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PIN set successfully
+
+
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        address_line1:
+          type: string
+          example: "Baxter Building"
+        address_line2:
+          type: string
+          example: "Green House"
+        address_line3:
+          type: string
+          example: "Up The Hill"
+        city:
+          type: string
+          example: "Braintree"
+        state_county_or_province:
+          type: string
+          example: "Essex"
+        post_code:
+          type: string
+          example: "CM75SL"
+        country_iso:
+          type: string
+          example: "GBR"
+    
+    Contact:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Mr"
+        first_name:
+          type: string
+          example: "Alan"
+        middle_name:
+          type: string
+          example: "Mathison"
+        last_name:
+          type: string
+          example: "Turing"
+        phone_number:
+          type: string
+          example: "+441234567890"
+        email:
+          type: string
+          example: "alan@turing.com"
+    
+    Card:
+      type: object
+      properties:
+        format:
+          type: string
+          example: "virtual"
+        card_id:
+          type: string
+          format: uuid
+          example: "a2ad322a-a2f9-3a5a-b0a9-e0d5c0f5b9f6"
+        secure_id:
+          type: string
+          format: uuid
+          example: "a2ad322a-a2f9-3a5a-b0a9-e0d5c0f5b9f6"
+        card_status:
+          type: string
+          example: "active"
+        pin:
+          type: string
+          example: "1234"
+        pin_secure:
+          type: string
+          example: "Qp3p7SzE7KBRZ3YzdC9rRBx8Yw=="
+        expiry_date:
+          type: string
+          example: "26/08"
+        valid_from_date:
+          type: string
+          example: "24/08"
+    
+    Delivery:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        contact:
+          $ref: '#/components/schemas/Contact'
+        thermal_line1:
+          type: string
+          example: "thermal_line1"
+        thermal_line2:
+          type: string
+          example: "thermal_line2"
+        emboss_name:
+          type: string
+          example: "Alan Turing"
+        emboss_line4:
+          type: string
+          example: "emboss_line4"
+        fulfil1:
+          type: string
+          example: "client_fulfil_message1"
+        fulfil2:
+          type: string
+          example: "client_fulfil_message2"
+        card_delivery_ref:
+          type: string
+          example: "1"
+        envelope_ref:
+          type: string
+          example: "envelope_reference"
+        carrier_ref:
+          type: string
+          example: "carrier_reference"
+        carrier_lang_ref:
+          type: string
+          example: "carrier_language_reference"
+        design_ref:
+          type: string
+          example: "design_reference"
+        bulk_address_id:
+          type: string
+          format: uuid
+          example: "a4da9a3d-54c8-499c-9f3b-c1cb5f3f8bbe"
+    
+    CreateCardRequest:
+      type: object
+      required:
+        - delivery
+        - card
+        - customer_id
+        - product_id
+        - card_manufacturer_id
+      properties:
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        card:
+          $ref: '#/components/schemas/Card'
+        card_manufacturer_id:
+          type: string
+          format: uuid
+          example: "99f38751-ad34-44c5-842b-bb448f430299"
+        customer_id:
+          type: string
+          format: uuid
+          example: "e33f3875-ad55-44c5-842b-22048f430322"
+        product_id:
+          type: string
+          format: uuid
+          example: "18ef9392-bd29-4f40-8b22-3f756977b887"
+        account_id:
+          type: string
+          format: uuid
+          example: "fcd0cecb-90dd-4ae2-879f-d0eda6fbddd4"
+
+    Customer:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        title:
+          type: string
+          example: "Mr"
+        first_name:
+          type: string
+          example: "John"
+        middle_name:
+          type: string
+          nullable: true
+          example: "Adam"
+        last_name:
+          type: string
+          example: "Doe"
+        date_of_birth:
+          type: string
+          example: "24/10/1981"
+        phone_number:
+          type: string
+          example: "+447911123456"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        external_ref:
+          type: string
+          example: "EXT-12345"
+        language_code:
+          type: string
+          example: "EN"
+        free_text:
+          type: string
+          nullable: true
+          example: "Preferred customer"
+        address:
+          $ref: '#/components/schemas/Address'
+        identification:
+          $ref: '#/components/schemas/Identification'
+    
+    Identification:
+      type: object
+      properties:
+        identification_1_type:
+          type: string
+          example: "PASSPORT"
+        identification_1_id:
+          type: string
+          example: "123456789"
+        identification_1_country:
+          type: string
+          example: "GBR"
+        identification_1_state:
+          type: string
+          example: "London"
+        identification_2_type:
+          type: string
+          example: "DRIVING_LICENSE"
+        identification_2_id:
+          type: string
+          example: "DL-908765"
+        identification_2_country:
+          type: string
+          example: "GBR"
+        identification_2_state:
+          type: string
+          example: "London"
+
+    CardOnboardRequest:
+      type: object
+      properties:
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        card:
+          $ref: '#/components/schemas/Card'
+        card_manufacturer_id:
+          type: string
+          format: uuid
+          example: "99f38751-ad34-44c5-842b-bb448f430299"
+        product_id:
+          type: string
+          format: uuid
+          example: "18ef9392-bd29-4f40-8b22-3f756977b887"
+
+    CardStatusUpdateRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          example: "lost"
+        note:
+          type: string
+          example: "Card confirmed lost"
+
+    CardPANQueryRequest:
+      type: object
+      properties:
+        pan:
+          type: string
+          example: 1234567890123456
+
+    CardDeliveryUpdateRequest:
+      type: object
+      properties:
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+
+    CardReplaceRequest:
+      type: object
+      properties:
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        card:
+          $ref: '#/components/schemas/Card'
+        secure_id:
+          type: string
+          format: uuid
+          example: "18ef9392-bd29-4f40-8b22-3f756977b887"
+
+    CardRenewRequest:
+      type: object
+      properties:
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        card:
+          $ref: '#/components/schemas/Card'
+        secure_id:
+          type: string
+          format: uuid
+          example: "18ef9392-bd29-4f40-8b22-3f756977b887"
+
+    CardUsageUpdateRequest:
+      type: object
+      required:
+        - usage
+      properties:
+        usage:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardUsageRule'
+
+    SecureCardDetailsRequest:
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: "9fc53743-247b-185f-8720-13be7ac028b6"
+        secure_id:
+          type: string
+          format: uuid
+          example: "18ef9392-bd29-4f40-8b22-3f756977b887"
+        encrypted_cipher:
+          type: string
+          example: "NmUwNzlkY2ItZmEzZi00NzY5LWI0OTgtYTg2YTNiYzkxNDA3"
+
+    CardUsageRule:
+      type: object
+      required:
+        - name
+        - enabled
+      properties:
+        name:
+          type: string
+          description: Name of the card usage rule
+          example: atm_pin_change
+        enabled:
+          type: boolean
+          description: Whether the rule is enabled or disabled
+          example: true
+
+    CardUpgrade:
+      type: object
+      properties:
+        new_card_id:
+          type: string
+          format: uuid
+        secure_id:
+          type: string
+          format: uuid
+        card_status:
+          type: string
+          example: active
+        pin:
+          type: string
+          example: "pin"
+        expiry_date:
+          type: string
+          example: "12"
+
+    UpgrateCardVirtualRequest:
+      type: object
+      properties:
+        card_upgrade:
+          $ref: '#/components/schemas/CardUpgrade'
+        delivery:
+          $ref: '#/components/schemas/Delivery'
+        card_manufacturer_id:
+          type: string
+          format: uuid
+          example: "67c7961e-fb74-40c3-bfae-a98418744831"
+
+    CreateBulkAddressRequest:
+      type: object
+      required:
+        - title
+        - first_name
+        - last_name
+        - address_line1
+        - city
+        - post_code
+        - country_iso
+        - bulk_delivery_method
+      properties:
+        title:
+          type: string
+          example: "Mr"
+        first_name:
+          type: string
+          example: "Alan"
+        middle_name:
+          type: string
+          example: "Mathison"
+        last_name:
+          type: string
+          example: "Turing"
+        phone_number:
+          type: string
+          example: "+441234567890"
+        email:
+          type: string
+          example: "alan.turing@clowd9.com"
+        address_line1:
+          type: string
+          example: "99 Church Meadows"
+        address_line2:
+          type: string
+          example: "Green House"
+        address_line3:
+          type: string
+          example: "Side 3"
+        city:
+          type: string
+          example: "Chelmsford"
+        post_code:
+          type: string
+          example: "CM7 5SL"
+        state_county_or_province:
+          type: string
+          example: "Essex"
+        country_iso:
+          type: string
+          maxLength: 3
+          example: "GBR"
+        bulk_delivery_method:
+          type: integer
+          example: 4
+        bulk_ref:
+          type: string
+          example: "CLOWD92024"
+
+
+
+  parameters:
+    XApiEncrypt:
+      name: x-api-encrypt
+      in: header
+      schema:
+        type: boolean
+        default: false
+        example: false
+      description: Encryption flag for API requests
+      
+    CardId:
+      name: card_id
+      in: path  
+      required: true
+      description: The identifier of the card.
+      schema:
+        type: string
+        default: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+    
+    CardFileScheduleId:
+      name: card_file_schedule_id
+      in: path  
+      required: true
+      description: The identifier of the card file schedule id.
+      schema:
+        type: string
+        default: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+    
+    BulkAddressId:
+      name: bulk_address_id
+      in: path  
+      required: true
+      description: The identifier of the bulk address id.
+      schema:
+        type: string
+        default: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"
+        example: "7f3c955d-2c3a-4dd4-8d88-45adcffa0e43"

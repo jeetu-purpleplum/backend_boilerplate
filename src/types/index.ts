@@ -12,6 +12,8 @@ export interface IConfig {
     swagger: ISwaggerConfig;
     encryption: IEncryption;
     kafka: IKafkaConfig;
+    clowd9: IClowd9Config;
+    fxbo: IFxboConfig;
 
 }
 
@@ -58,6 +60,21 @@ export interface IKafkaConfig {
     clientId: string;
     brokers: string;
     groupId: string;
+}
+
+export interface IClowd9Config {
+    apiKey: string;
+    apiSecret: string;
+    clientId: string;
+    productId: string;
+    cardManufacturerId: string;
+    baseUrl: string;
+}
+
+export interface IFxboConfig {
+    baseUrl: string;
+    apiVersion: string;
+    token: string;
 }
 
 export type DatabaseConnections = Knex[];

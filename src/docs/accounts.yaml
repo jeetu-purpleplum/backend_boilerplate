@@ -1,0 +1,123 @@
+tags:
+  - name: Account
+    description: Account-related endpoints
+
+paths:
+  /accounts/balance/{loginSid}:
+    get:
+      tags:
+        - Account
+      summary: Find account balance by account loginSid
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+        - $ref: '#/components/parameters/LoginSid'
+      responses:
+        '200':
+          description: Account balance retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+        '404':
+          description: Account not found
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /accounts/check-balance:
+    post:
+      tags:
+        - Account
+      summary: Check balance action (Get multiple account balances)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/XApiEncrypt'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: object
+                  description: Optional filters for accounts
+              example: {}
+      responses:
+        '200':
+          description: Account balances retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountBalance'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+components:
+  schemas:
+    AccountBalance:
+      type: object
+      properties:
+        login:
+          type: string
+          example: "4008"
+          description: Account login ID
+        currency:
+          type: string
+          example: "USD"
+          description: Account currency code
+        balance:
+          type: string
+          example: "67.8500000000"
+          description: Account balance (as string with precision)
+        serverId:
+          type: string
+          example: "6"
+          description: Server ID where account is hosted
+
+    AccountBalanceList:
+      type: array
+      items:
+        $ref: '#/components/schemas/AccountBalance'
+      example:
+        - login: "1"
+          currency: "USD"
+          balance: "102.0000000000"
+          serverId: "1"
+        - login: "999999042"
+          currency: "USD"
+          balance: "81.2800000000"
+          serverId: "5"
+        - login: "999999043"
+          currency: "USD"
+          balance: "0.0000000000"
+          serverId: "5"
+
+  parameters:
+    XApiEncrypt:
+      name: x-api-encrypt
+      in: header
+      schema:
+        type: boolean
+        default: false
+        example: false
+      description: Encryption flag for API requests
+    
+    LoginSid:
+      name: loginSid
+      in: path
+      required: true
+      description: Account login and server ID in format "serverId-login"
+      schema:
+        type: string
+        example: "6-4008"
